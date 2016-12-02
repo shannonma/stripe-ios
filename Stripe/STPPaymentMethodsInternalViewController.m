@@ -118,6 +118,31 @@ static NSInteger STPPaymentMethodAddCardSection = 1;
     return 0;
 }
 
+- (BOOL)tableView:(__unused UITableView *)tableView canEditRowAtIndexPath:(__unused NSIndexPath *)indexPath
+{
+  // Only non-default credit cards can be removed.
+  if (indexPath.section == STPPaymentMethodCardListSection) {
+    id<STPPaymentMethod> paymentMethod = [self.paymentMethods stp_boundSafeObjectAtIndex:indexPath.row];
+    return [paymentMethod isKindOfClass:[STPCard class]] && ![self.selectedPaymentMethod isEqual:paymentMethod];
+  }
+  return NO;
+}
+
+- (void)tableView:(__unused UITableView *)tableView commitEditingStyle:(__unused UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(__unused NSIndexPath *)indexPath
+{
+  if (indexPath.section == STPPaymentMethodCardListSection) {
+    NSUInteger row = indexPath.row;
+    id<STPPaymentMethod> paymentMethod = [self.paymentMethods stp_boundSafeObjectAtIndex:row];
+
+    NSMutableArray<id<STPPaymentMethod>> *paymentMethods = [self.paymentMethods mutableCopy];
+    [paymentMethods removeObjectAtIndex:row];
+    self.paymentMethods = paymentMethods;
+    [self.tableView reloadData];
+
+    [_delegate internalViewControllerDidRemovePaymentMethod:paymentMethod];
+  }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     STPPaymentMethodTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:STPPaymentMethodCellReuseIdentifier forIndexPath:indexPath];
     if (indexPath.section == STPPaymentMethodCardListSection) {

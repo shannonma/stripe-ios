@@ -60,6 +60,16 @@ typedef void (^STPCustomerCompletionBlock)(STPCustomer * __nullable customer, NS
  */
 - (void)selectDefaultCustomerSource:(id<STPSource>)source completion:(STPErrorBlock)completion;
 
+/**
+ * Removes a payment source from a customer. On your backend, retrieve the Stripe customer associated with your logged-in user. Then, call the Delete Card method on that customer as described at https://stripe.com/docs/api#delete_card . If this API call succeeds, calls `completion(nil)`. Otherwise, call `completion(error)` with the error that occurred.
+ *
+ * @param source      the existing payment source to delete, such as a card token.
+ * @param completion  call this callback when you're done deleting the token from the customer on your backend. For example, `completion(nil)` (if your call succeeds) or `completion(error)` if an error is returned.
+ *
+ *  @note If you are on Swift 3, you must declare the completion block as `@escaping` or Xcode will give you a protocol conformance error. https://bugs.swift.org/browse/SR-2597
+ */
+- (void)removeSourceFromCustomer:(id<STPSource>)source completion:(STPErrorBlock)completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -38,4 +38,9 @@
 - (void)selectDefaultCustomerSource:(__unused id<STPSource>)source completion:(STPErrorBlock)completion {
     completion(nil);
 }
+
+- (void)removeSourceFromCustomer:(id<STPSource>)source completion:(STPErrorBlock)completion {
+    completion(nil);
+}
+
 @end

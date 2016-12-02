@@ -142,5 +142,33 @@ class MyAPIClient: NSObject, STPBackendAPIAdapter {
         }
         task.resume()
     }
+  
+    @objc func removeSource(fromCustomer source: STPSource, completion: @escaping STPErrorBlock) {
+      guard let baseURLString = baseURLString, let baseURL = URL(string: baseURLString) else {
+        if let token = source as? STPToken, let card = token.card {
+          if let index = self.sources.index(of: card) {
+            self.sources.remove(at: index)
+          }
+        }
+        completion(nil)
+        return
+      }
+      let path = "/customer/remove_source"
+      let url = baseURL.appendingPathComponent(path)
+      let params = [
+        "source": source.stripeID,
+        ]
+      let request = URLRequest.request(url, method: .POST, params: params as [String : AnyObject])
+      let task = self.session.dataTask(with: request) { (data, urlResponse, error) in
+        DispatchQueue.main.async {
+          if let error = self.decodeResponse(urlResponse, error: error as NSError?) {
+            completion(error)
+            return
+          }
+          completion(nil)
+        }
+      }
+      task.resume()
+    }
 
 }

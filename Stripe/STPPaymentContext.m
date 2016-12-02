@@ -266,6 +266,18 @@
     self.selectedPaymentMethod = paymentMethod;
 }
 
+- (void)paymentMethodsViewController:(__unused STPPaymentMethodsViewController *)paymentMethodsViewController
+              didRemovePaymentMethod:(id<STPPaymentMethod>)paymentMethod
+{
+  NSMutableArray *paymentMethods = [self.paymentMethods mutableCopy];
+  [paymentMethods removeObject:paymentMethod];
+  self.paymentMethods = paymentMethods;
+
+  if ([self.selectedPaymentMethod isEqual:paymentMethod]) {
+    self.selectedPaymentMethod = nil;
+  }
+}
+
 - (void)paymentMethodsViewControllerDidFinish:(STPPaymentMethodsViewController *)paymentMethodsViewController {
     [self appropriatelyDismissPaymentMethodsViewController:paymentMethodsViewController completion:nil];
 }

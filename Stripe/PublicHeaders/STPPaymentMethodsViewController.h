@@ -76,6 +76,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)paymentMethodsViewController:(STPPaymentMethodsViewController *)paymentMethodsViewController
               didSelectPaymentMethod:(id<STPPaymentMethod>)paymentMethod;
 
+/**
+ *  This is called when the user deletes a card. You should use this callback to update any necessary UI in your app that displays the users payment methods. You should *not* dismiss the view controller at this point, instead do this in `paymentMethodsViewControllerDidFinish:`. `STPPaymentMethodsViewController` will also call the necessary methods on your API adapter, so you don't need to call them directly during this method.
+ *
+ *  @param paymentMethodsViewController the view controller in question
+ *  @param paymentMethod                the payment method that was deleted
+ */
+- (void)paymentMethodsViewController:(STPPaymentMethodsViewController *)paymentMethodsViewController
+              didRemovePaymentMethod:(id<STPPaymentMethod>)paymentMethod;
 
 /**
  *  This is called when the view controller encounters an error fetching the user's payment methods from its API adapter. You should dismiss the view controller when this is called.

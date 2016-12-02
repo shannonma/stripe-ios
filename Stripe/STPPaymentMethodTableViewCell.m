@@ -52,6 +52,7 @@
 }
 
 - (void)configureForNewCardRowWithTheme:(STPTheme *)theme {
+    _paymentMethod = nil;
     _theme = theme;
     self.backgroundColor = [UIColor clearColor];
     self.contentView.backgroundColor = self.theme.secondaryBackgroundColor;

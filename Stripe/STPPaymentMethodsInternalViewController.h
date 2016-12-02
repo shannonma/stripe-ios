@@ -16,6 +16,7 @@
 - (void)internalViewControllerDidSelectPaymentMethod:(id<STPPaymentMethod>)paymentMethod;
 - (void)internalViewControllerDidCreateToken:(STPToken *)token
                                   completion:(STPErrorBlock)completion;
+- (void)internalViewControllerDidRemovePaymentMethod:(id<STPPaymentMethod>)paymentMethod;
 
 @end
 

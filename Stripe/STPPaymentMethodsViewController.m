@@ -204,6 +204,18 @@
     }];
 }
 
+- (void)internalViewControllerDidRemovePaymentMethod:(id<STPPaymentMethod>)paymentMethod
+{
+  if ([paymentMethod isKindOfClass:[STPCard class]]) {
+    STPCard *card = (STPCard *)paymentMethod;
+    [self.apiAdapter removeSourceFromCustomer:card completion:^(__unused NSError *error) {
+      if (!error) {
+        [self.delegate paymentMethodsViewController:self didRemovePaymentMethod:card];
+      }
+    }];
+  }
+}
+
 - (void)addCardViewControllerDidCancel:(__unused STPAddCardViewController *)addCardViewController {
     [self.delegate paymentMethodsViewControllerDidFinish:self];
 }
